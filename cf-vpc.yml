@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: MyVPC
+
+  Subnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: MySubnet
+
+  Subnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: MySubnet2        
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for EC2 instances
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: MySecurityGroup
+
+Outputs:
+  VpcId:
+    Value: !Ref VPC
+    Export:
+      Name: VpcId
+
+  SubnetId:
+    Value: !Ref Subnet
+    Export:
+      Name: Subnet1Id
+
+  SecurityGroupId:
+    Value: !Ref SecurityGroup
+    Export:
+      Name: SecurityGroupId
